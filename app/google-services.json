@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "444763228701",
+    "project_id": "parkneeds-ca0ae",
+    "storage_bucket": "parkneeds-ca0ae.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:444763228701:android:5e73fb4cdd292ab9ac14f4",
+        "android_client_info": {
+          "package_name": "com.vijay.parkneeds"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpPBQKuKg2fLMqTzgzlrgo_smf-MmZw5Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

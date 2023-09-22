@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">ParkNeeds</string>
+    <string name="park_needs">Park Needs</string>
+    <string name="login">Login</string>
+    <string name="enter_email">Enter Email</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="enter_name">Enter Name</string>
+    <string name="confirm_password">Enter Confirm Password</string>
+    <string name="register">Register</string>
+    <string name="new_user">New User?</string>
+    <string name="sign_up_here"><u>Sign Up Here</u></string>
+</resources>

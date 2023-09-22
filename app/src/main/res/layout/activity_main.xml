@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+<LinearLayout
+    android:padding="20dp"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="@string/login"
+        android:textStyle="bold"
+        android:inputType="textEmailAddress"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="TextViewEdits" />
+
+    <EditText
+        android:layout_marginTop="30dp"
+        android:inputType="textEmailAddress"
+        android:id="@+id/etEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/enter_email"
+        tools:ignore="TextFields"
+        android:autofillHints="" />
+
+    <EditText
+        android:layout_marginTop="10dp"
+        android:id="@+id/etPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/enter_password"
+        android:inputType="textPassword"
+        android:autofillHints="" />
+
+    <Button
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center"
+        android:id="@+id/btnLogin"
+        android:textAllCaps="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/login" />
+
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="@string/new_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/tvSignUpHere"
+            android:layout_marginStart="20dp"
+            android:text="@string/sign_up_here"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</LinearLayout>
+
+</ScrollView>
