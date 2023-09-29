@@ -1,6 +1,7 @@
 package com.vijay.parkneeds
 
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -11,6 +12,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.gson.Gson
 import com.vijay.parkneeds.Models.UserModel
 import com.vijay.parkneeds.databinding.ActivityMainBinding
 import com.vijay.parkneeds.databinding.ActivitySplashBinding
@@ -25,6 +27,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var database: DatabaseReference
 
+    private lateinit var sp: SharedPreferences
+    private lateinit var editor: SharedPreferences.Editor
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -32,6 +37,9 @@ class MainActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
         database = Firebase.database.reference.child("users")
+
+        sp = getSharedPreferences("my_sp", MODE_PRIVATE)
+        editor = sp.edit()
 
         binding.btnLogin.setOnClickListener {
             if (binding.etEmail.text.equals(null)){
@@ -47,6 +55,12 @@ class MainActivity : AppCompatActivity() {
                                 override fun onDataChange(snapshot: DataSnapshot) {
                                     val value = snapshot.child(id).getValue(UserModel::class.java)
                                     if (value != null) {
+
+                                        val gson = Gson()
+                                        val json = gson.toJson(value)
+                                        editor.putString("user_model", json)
+                                        editor.apply()
+
                                         if (value.userType == "Park Spot Finder"){
                                             startActivity(Intent(this@MainActivity, FinderHomeActivity::class.java))
                                         }else{

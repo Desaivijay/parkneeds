@@ -53,7 +53,7 @@ class RegistrationActivity : AppCompatActivity() {
                         database.addValueEventListener(object : ValueEventListener {
                             override fun onDataChange(snapshot: DataSnapshot) {
                                 if (id != null) {
-                                    val userModel = UserModel(binding.etName.text.toString(), binding.etEmail.text.toString(), binding.etPassword.text.toString(), binding.spinner.selectedItem.toString())
+                                    val userModel = UserModel(binding.etName.text.toString(), binding.etEmail.text.toString(), binding.etPassword.text.toString(), binding.spinner.selectedItem.toString(), id)
                                     database.child(id).setValue(userModel)
                                 }
                             }
