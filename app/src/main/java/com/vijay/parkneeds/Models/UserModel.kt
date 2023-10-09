@@ -6,4 +6,4 @@ data class UserModel(
     val password: String = "",
     val userType: String = "",
     val id: String = ""
-)
+) : java.io.Serializable

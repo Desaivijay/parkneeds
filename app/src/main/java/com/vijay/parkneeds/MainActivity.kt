@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity() {
                                 }
 
                                 override fun onCancelled(error: DatabaseError) {
-                                    Toast.makeText(this@MainActivity, "Failed to register", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(this@MainActivity, "Failed to login", Toast.LENGTH_SHORT).show()
                                 }
                             })
                         }

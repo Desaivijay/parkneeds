@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -26,60 +27,62 @@ class OwnerHomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityOwnerHomeBinding
 
+    lateinit var parkingList: ArrayList<ParkingLot>
+    lateinit var userModel: UserModel
+    lateinit var adapter: ParkingLotItemAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityOwnerHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.btnAddParkingLot.setOnClickListener {
-            startActivity(Intent(this, AddParkingLotActivity::class.java))
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
+        val linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true)
+        linearLayoutManager.stackFromEnd = true
+        binding.rvParkingLots.layoutManager = linearLayoutManager
 
         val sp = getSharedPreferences("my_sp", MODE_PRIVATE)
         val gson = Gson()
         val json = sp.getString("user_model", null)
         val type: Type = object : TypeToken<UserModel>() {}.type
 
-        val userModel = gson.fromJson<Any>(json, type) as UserModel
+        userModel = gson.fromJson<Any>(json, type) as UserModel
 
         auth = FirebaseAuth.getInstance()
         database = Firebase.database.reference.child("parking")
 
-        database.orderByChild("id").equalTo(userModel.id).addValueEventListener(object : ValueEventListener{
-            override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(this@OwnerHomeActivity, "Failed", Toast.LENGTH_SHORT).show()
-            }
+        parkingList = ArrayList<ParkingLot>()
+        adapter = ParkingLotItemAdapter(parkingList, this@OwnerHomeActivity)
+        binding.rvParkingLots.adapter = adapter
 
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val parkingList = ArrayList<ParkingLot>()
+        binding.btnAddParkingLot.setOnClickListener {
+            startActivity(Intent(this, AddParkingLotActivity::class.java))
+        }
+    }
 
-                for (parking in snapshot.children){
-                    val parkingName = parking.child("parkingNAme").value.toString()
-                    val parkingAddress = parking.child("parkingAddress").value.toString()
-                    val parkingClosingTime = parking.child("parkingClosingTime").value.toString()
-                    val parkingOpeningTime = parking.child("parkingOpeningTime").value.toString()
-                    val parkingTotalSlots = parking.child("parkingTotalSlots").value.toString()
-                    val parkingAvailableSlots = parking.child("parkingAvailableSlots").value.toString()
-                    val parkingType = parking.child("parkingType").value.toString()
-                    val parkingRate = parking.child("parkingRate").value.toString()
-                    val userModel = parking.child("userModel").value as UserModel
 
-                    parkingList.add(ParkingLot(userModel, parkingName, parkingAddress, parkingOpeningTime, parkingClosingTime, parkingType, parkingRate, parkingTotalSlots, parkingAvailableSlots))
+    override fun onResume() {
+        super.onResume()
+
+        getParkingList()
+    }
+
+    private fun getParkingList() {
+        database.orderByChild("userModel/id").equalTo(userModel.id)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(this@OwnerHomeActivity, "Failed", Toast.LENGTH_SHORT).show()
                 }
 
+                override fun onDataChange(snapshot: DataSnapshot) {
 
-                val adapter = ParkingLotItemAdapter(parkingList, this@OwnerHomeActivity)
-                binding.rvParkingLots.adapter = adapter
-            }
-        })
-        val data = ArrayList<ParkingLot>()
+                    parkingList.clear()
+                    for (parking in snapshot.children) {
+                        val parkingLot = parking.getValue(ParkingLot::class.java)
+                        parkingLot?.let { parkingList.add(parkingLot) }
 
-        for (i in 1..10){
-            data.add(ParkingLot(userModel,"abc", "sudbury", "10 am", "10 pm","Paid", "20", "50", "20"))
-        }
+                        adapter.notifyDataSetChanged()
+                    }
+                }
+            })
     }
 }
